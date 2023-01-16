@@ -35,6 +35,16 @@ abstract class AbstractODM<T> {
   public async delete(_id: string): Promise<void> {
     this.model.deleteOne({ _id });
   }
+
+  public async findAll(): Promise<T[]> {
+    return this.model.find();
+  }
+
+  public async findById(id: string): Promise<T | null> {
+    if (!isValidObjectId(id)) throw new Error('Invalid mongo id');
+
+    return this.model.findById(id);
+  }
 }
 
 export default AbstractODM;
