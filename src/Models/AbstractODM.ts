@@ -25,7 +25,6 @@ abstract class AbstractODM<T> {
     return this.model.findByIdAndUpdate(
       { _id },
       { ...obj } as UpdateQuery<T>,
-      { new: true },
     );
   }
 
