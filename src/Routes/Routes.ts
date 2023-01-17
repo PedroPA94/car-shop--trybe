@@ -24,6 +24,11 @@ routes.put(
   (req, res, next) => new CarController(req, res, next).update(),
 );
 
+routes.delete(
+  '/cars/:id',
+  (req, res, next) => new CarController(req, res, next).delete(),
+);
+
 routes.post(
   '/motorcycles',
   (req, res, next) => new MotorcycleController(req, res, next).create(),
@@ -34,14 +39,21 @@ routes.get(
   (req, res, next) => new MotorcycleController(req, res, next).getAll(),
 );
 
+const motorcyclesId = '/motorcycles/:id';
+
 routes.get(
-  '/motorcycles/:id',
+  motorcyclesId,
   (req, res, next) => new MotorcycleController(req, res, next).getById(),
 );
 
 routes.put(
-  '/motorcycles/:id',
+  motorcyclesId,
   (req, res, next) => new MotorcycleController(req, res, next).update(),
+);
+
+routes.delete(
+  motorcyclesId,
+  (req, res, next) => new MotorcycleController(req, res, next).delete(),
 );
 
 export default routes;

@@ -7,6 +7,8 @@ import {
   isValidObjectId,
 } from 'mongoose';
 
+const INVALID_ID_MSG = 'Invalid mongo id';
+
 abstract class AbstractODM<T> {
   protected model: Model<T>;
   protected schema: Schema;
@@ -23,7 +25,7 @@ abstract class AbstractODM<T> {
   }
 
   public async update(_id: string, obj: Partial<T>): Promise<T | null> {
-    if (!isValidObjectId(_id)) throw new Error('Invalid mongo id');
+    if (!isValidObjectId(_id)) throw new Error(INVALID_ID_MSG);
 
     return this.model.findByIdAndUpdate(
       { _id },
@@ -32,8 +34,12 @@ abstract class AbstractODM<T> {
     );
   }
 
-  public async delete(_id: string): Promise<void> {
-    this.model.deleteOne({ _id });
+  public async delete(_id: string): Promise<number> {
+    if (!isValidObjectId(_id)) throw new Error(INVALID_ID_MSG);
+
+    const deleted = await this.model.deleteOne({ _id });
+
+    return deleted.deletedCount;
   }
 
   public async findAll(): Promise<T[]> {
@@ -41,7 +47,7 @@ abstract class AbstractODM<T> {
   }
 
   public async findById(id: string): Promise<T | null> {
-    if (!isValidObjectId(id)) throw new Error('Invalid mongo id');
+    if (!isValidObjectId(id)) throw new Error(INVALID_ID_MSG);
 
     return this.model.findById(id);
   }

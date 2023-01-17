@@ -15,6 +15,10 @@ class CarController {
     this.service = new CarService();
   }
 
+  private notFoundMessage() {
+    return this.res.status(404).json({ message: 'Car not found' }); 
+  }
+
   public async create() {
     const car: ICar = {
       doorsQty: this.req.body.doorsQty,
@@ -46,7 +50,7 @@ class CarController {
       if (car) {
         return this.res.status(200).json(car);
       }
-      return this.res.status(404).json({ message: 'Car not found' });
+      return this.notFoundMessage();
     } catch (err) {
       this.next(err);
     }
@@ -69,7 +73,21 @@ class CarController {
       if (updatedCar) {
         return this.res.status(200).json(updatedCar);
       }
-      return this.res.status(404).json({ message: 'Car not found' }); 
+      return this.notFoundMessage();
+    } catch (err) {
+      this.next(err);
+    }
+  }
+
+  public async delete() {
+    const { id } = this.req.params;
+
+    try {
+      const successfulDelete = await this.service.delete(id);
+      if (successfulDelete) {
+        return this.res.status(204).end();
+      }
+      return this.notFoundMessage(); 
     } catch (err) {
       this.next(err);
     }

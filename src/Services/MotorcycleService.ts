@@ -29,9 +29,14 @@ class MotorcycleService {
   }
 
   public async update(id: string, motorcycle: Partial<IMotorcycle>) {
-    const carODM = new MotorcycleODM();
-    const updatedCar = await carODM.update(id, motorcycle);
-    return this.createMotorcycleDomain(updatedCar);
+    const motorcycleODM = new MotorcycleODM();
+    const updatedMotorcycle = await motorcycleODM.update(id, motorcycle);
+    return this.createMotorcycleDomain(updatedMotorcycle);
+  }
+
+  public async delete(id: string) {
+    const motorcycleODM = new MotorcycleODM();
+    return motorcycleODM.delete(id);
   }
 }
 

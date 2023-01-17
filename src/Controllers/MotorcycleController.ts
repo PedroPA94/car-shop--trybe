@@ -15,6 +15,10 @@ class MotorcycleController {
     this.service = new MotorcycleService();
   }
 
+  private notFoundMessage() {
+    return this.res.status(404).json({ message: 'Motorcycle not found' }); 
+  }
+
   public async create() {
     const motorcycle: IMotorcycle = {
       model: this.req.body.model,
@@ -46,7 +50,7 @@ class MotorcycleController {
       if (motorcycle) {
         return this.res.status(200).json(motorcycle);
       }
-      return this.res.status(404).json({ message: 'Motorcycle not found' });
+      return this.notFoundMessage();
     } catch (err) {
       this.next(err);
     }
@@ -69,7 +73,21 @@ class MotorcycleController {
       if (updatedMotorcycle) {
         return this.res.status(200).json(updatedMotorcycle);
       }
-      return this.res.status(404).json({ message: 'Motorcycle not found' }); 
+      return this.notFoundMessage();
+    } catch (err) {
+      this.next(err);
+    }
+  }
+
+  public async delete() {
+    const { id } = this.req.params;
+
+    try {
+      const successfulDelete = await this.service.delete(id);
+      if (successfulDelete) {
+        return this.res.status(204).end();
+      }
+      return this.notFoundMessage(); 
     } catch (err) {
       this.next(err);
     }
