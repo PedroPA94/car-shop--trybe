@@ -17,6 +17,7 @@ This project was developed while studying Back-end web development [@betrybe](ht
 - Express.js
 - MongoDB
 - Mongoose
+- Mocha/Chai/Sinon for tests
 - Docker
 - Layered Software Architecture
 
